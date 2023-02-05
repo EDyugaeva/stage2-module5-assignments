@@ -19,13 +19,13 @@ import lombok.Setter;
 public class LocalProcessor {
     private String processorName;
     private Long period = 10_000_000_000_000L;
-    private String processorVersion;
+    private StringBuilder processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
     private static List<String> stringArrayList = new LinkedList<>();
 
-    public LocalProcessor(String processorName, Long period, String processorVersion, Integer valueOfCheap,
-                          Scanner informationscanner, LinkedList<String> stringArrayList) {
+    public LocalProcessor(String processorName, Long period, StringBuilder processorVersion, Integer valueOfCheap,
+                          Scanner informationscanner, List<String> stringArrayList) {
         this.processorName = processorName;
         this.period = period;
         this.processorVersion = processorVersion;
@@ -59,8 +59,7 @@ public class LocalProcessor {
         try {
             informationScanner = new Scanner(file);
             while (informationScanner.hasNext()) {
-                processorVersion += informationScanner.nextLine();
-            }
+                processorVersion.append(informationScanner.nextLine());            }
         } catch (FileNotFoundException e) {
             System.out.println("file not exception error while creating scanner");
         }finally {
