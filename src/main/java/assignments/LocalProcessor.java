@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.lang.StringBuilder;
 
 import assignments.annotations.FullNameProcessorGeneratorAnnotation;
 import assignments.annotations.ListIteratorAnnotation;
@@ -37,10 +39,9 @@ public class LocalProcessor {
 
     @ListIteratorAnnotation
     public void listIterator(List<String> stringList) {
-        for (String s :
-                stringList) {
-            System.out.println(s.hashCode());
-        }
+        stringList.stream().filter(Objects::nonNull)
+                .mapToInt(Objects::hashCode)
+                .forEach(System.out::println);
     }
 
     @FullNameProcessorGeneratorAnnotation
@@ -57,11 +58,13 @@ public class LocalProcessor {
     public void readFullProcessorName(File file) {
         try {
             informationScanner = new Scanner(file);
+            while (informationScanner.hasNext()) {
+                processorVersion += informationScanner.nextLine();
+            }
         } catch (FileNotFoundException e) {
             System.out.println("file not exception error while creating scanner");
-        }
-        while (informationScanner.hasNext()) {
-            processorVersion += informationScanner.nextLine();
+        }finally {
+            informationScanner.close();
         }
 
 
